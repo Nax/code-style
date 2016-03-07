@@ -1,2 +1,3 @@
-# code-style
-Code style for some languages
+# Code Style
+
+* [C++](cpp)
