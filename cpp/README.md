@@ -98,8 +98,91 @@ main(int argc, char** argv)
 * Always declare a function `static` when it's not exported.
 * Never declare a standalone `static` function in headers.
 
-## Code
+## Flow control
 * Use `for` over `while` when it clarify the intent of your code.
 * Use `for (;;)` as infinite loops.
 * Avoid using `goto`, unless you have a very good reason to use it.
-* 
+* Indent `switch` as follow
+
+```c++
+// Good
+switch (c)
+{
+    case 0:
+        printf("Zero");
+        break;
+    case 2:
+        printf("Two");
+        some_call();
+        break;
+    default:
+        printf("%d", c);
+}
+```
+
+* Always add a default in a switch, unless you handle all cases. In such case, add a comment explaining why you always catch all cases.
+* Always use braces around `if`, `else if`, `else`, `while`, `for`.
+
+```c++
+// Bad
+if (!ptr)
+    exit(1);
+
+// Good
+if (!ptr)
+{
+    exit(1);
+}
+```
+
+## Classes
+* Use `UpperCamelCase` for class identifier and `lowerCamelCase` for members.
+* Always make attributes `private`. If the class is so simple you want attributes to be public, use a `struct` instead.
+* Use CRTP instead of `virtual` when doing static polymorphing.
+
+```c++
+// Bad
+class Base
+{
+public:
+    void
+    bar()
+    {
+        puts("bar");
+        foo();
+    }
+    
+    virtual void    foo() = 0;
+};
+
+class Derived : public Base
+{
+public:
+    void        foo() { puts("foo"); }
+};
+
+// Good
+template <typename Derived>
+class Base
+{
+public:
+    void
+    bar()
+    {
+        puts("bar");
+        Derived* self = static_cast<Derived*>(this);
+        self->foo();
+    }
+}
+
+class Derived : public Base<Derived>
+{
+public:
+    void        foo() { puts("foo"); }
+}
+```
+
+* Prefer composition to inheritance.
+
+## Templates
+* Use `typename` instead of `class` for templates parameters, except in cases where you MUST use `class`.
