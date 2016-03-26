@@ -53,7 +53,7 @@
 * Library-wide namespace should be `lowercase` only. No underscores.
 * Namespaces that provide a service (a group of related functions, or scoped weak enums) should be `UpperCamelCase`.
 * Use of `using namespace` is accepted in a source file, for a library-wide namespace.
-* A `priv` namespace should be used when exposing implementation details in a header file. This is mostly for templates or inlined code.
+* A `priv` namespace should be used when exposing implementation details in a header file. This is mostly for templates,  inlined code and generated sources.
 * Always indent a namespaced block. Always put the `{` on it's own line.
 
 ```c++
@@ -75,20 +75,19 @@ namespace Math
 * Never add new elements to `std`, except specializations, and do so with care.
 
 ## Functions
-* Put the function's type on it's own line in the definition.
-* Put the function's type  in the same line in the declaration.
+* Put the function's type  in the same line as the function's name.
 * Insert a newline before the opening `{`.
 * Always make `main` following this exact signature, including arguments names: `int main(int argc, char** argv)`
 
 ```c++
 // Bad
-void main () {
+void
+main () {
 
 }
 
 // Good
-int
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 
 }
@@ -101,6 +100,27 @@ main(int argc, char** argv)
 ## Flow control
 * Use `for` over `while` when it clarify the intent of your code.
 * Use `for (;;)` as infinite loops.
+
+```c++
+// Bad
+while (1)
+{
+    ...
+}
+
+// Ok-ish
+while (true)
+{
+    ...
+}
+
+// Good
+for (;;)
+{
+
+}
+```
+
 * Avoid using `goto`, unless you have a very good reason to use it.
 * Indent `switch` as follow
 
@@ -121,23 +141,10 @@ switch (c)
 ```
 
 * Always add a default in a switch, unless you handle all cases. In such case, add a comment explaining why you always catch all cases.
-* Always use braces around `if`, `else if`, `else`, `while`, `for`.
-
-```c++
-// Bad
-if (!ptr)
-    exit(1);
-
-// Good
-if (!ptr)
-{
-    exit(1);
-}
-```
 
 ## Classes
 * Use `UpperCamelCase` for class identifier and `lowerCamelCase` for members.
-* Always make attributes `private`. If the class is so simple you want attributes to be public, use a `struct` instead.
+* Prefer making attributes `private`. If the class is so simple you want attributes to be public, use a `struct` instead.
 * Use CRTP instead of `virtual` when doing static polymorphing.
 
 ```c++
